@@ -1,0 +1,40 @@
+#Items
+
+Support for each of the *-Item commands varies from one provider to another.
+The FS provider supports all of the commands while the Registry provider
+supports a smaller number
+
+##Testing existence
+
+The Test-Path
+Test-Path HKLM:\Software\Publisher
+
+The Test-Path command is often used in an if statement prior to creating a file or directory:
+
+if (-not (Test-Path C:\Temp\NewDirectory -PathType Container)) { 
+    New-Item C:\Temp\NewDirectory -ItemType Directory
+ } 
+
+##Creating items
+The New-Item command is able to create files, directories and keys:
+
+New-Item $env:Temp\newfile.txt -ItemType File
+New-Item $env:Temp\newdirectory -ItemType Directory
+New-Item HKLM:\Software\NewKey -ItemType Key
+
+
+In PowerShell 5, New-Item gained the ability to create symbolic links, junctions, and hard links.
+
+New-Item LinkName -ItemType SymbolicLink -Value \\Server\Share
+New-Item LinkName.txt -ItemType HardLink -Value OriginalName.txt
+New-Item LinkName -ItemType Junction -Value C:\Temp
+
+##Deleting items
+
+The Remove-Item command may be used to remove an existing item under a provider; for example:
+
+$file = [System.IO.Path]::GetTempFileName()
+Set-Content -Path $file -Value 'Temporary: 10'
+Remove-Item $file
+
+
